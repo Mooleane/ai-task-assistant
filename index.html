@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+    <title>ChatGPT with Tasks (NLP-enabled)</title>
+    <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Left: Task List -->
+        <div class="tasks-wrapper">
+            <div class="tasks-panel">
+                <h2>Tasks</h2>
+                <div id="task-list"></div>
+
+                <div class="task-input">
+                    <input type="datetime-local" id="new-task-datetime" />
+                    <input type="text" id="new-task" placeholder="Add a task..." />
+                    <button onclick="addTask()">➕</button>
+                </div>
+
+                <div class="task-help">
+                    You can ask the Chatbot to:
+                    <ul>
+                        <li><code>Add a [Task Name] task at 5pm tomorrow.</code></li>
+                        <li><code>Edit [Task Name] to [New Task Name] and to be # hours later than originally set.</code></li>
+                        <li><code>Delete the [Task Name] task.</code></li>
+                    </ul>
+                    Fun Examples:
+                    <ul>
+                        <li><code>Add 15 randomized tasks at your preference over the timespan of 3 days ahead.</code></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Right: Chatbot -->
+        <div class="chat-panel">
+            <h1>Task Assistant</h1>
+
+            <!-- Tabs row -->
+            <div id="chat-tabs-container" class="chat-tabs-container" role="tablist" aria-label="Chats"></div>
+
+            <button onclick="newChat()">+ New Chat</button>
+
+            <!-- AI Response -->
+            <div id="ai-response" class="chat-output">
+                <div class="placeholder">Your conversation will appear here...</div>
+            </div>
+
+            <!-- Input bar -->
+            <div class="chat-input-bar">
+                <textarea id="user-input" placeholder="Type your message... (Shift+Enter for newline)"></textarea>
+                <button id="send-btn" onclick="sendToChatGPT()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/api.js"></script>
+</body>
+</html>

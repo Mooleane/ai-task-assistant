@@ -1,0 +1,403 @@
+/* ========================================================================== 
+   Theme variables — customizable
+   ========================================================================== */
+:root{
+  --bg: #f4f4f4;
+  --panel-bg: #ffffff;
+  --muted: #555;
+  --border: #e6e6e6;
+  --primary: #2d8aee;
+  --primary-contrast: #ffffff;
+  --bubble-user: #dff7df;
+  --bubble-ai: #f1f1f1;
+  --danger: #ffb3b3;
+  --text: #222;
+
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  --base-font-size: 16px;
+  --heading-scale: 1.15;
+
+  --gap-sm: 6px;
+  --gap-md: 12px;
+  --gap-lg: 16px;
+  --panel-padding: 16px;
+  --border-radius: 8px;
+  --bubble-radius: 10px;
+  --bubble-max-width: 80%;
+}
+
+/* ========================================================================== 
+   Base / Layout
+   ========================================================================== */
+* { box-sizing: border-box; }
+html,body { height: 100%; margin:0; }
+body {
+  font-family: var(--font-sans);
+  font-size: var(--base-font-size);
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* Container layout */
+.app-container {
+  display: flex;
+  height: 100vh;
+  gap: var(--gap-lg);
+  flex-wrap: wrap;  /* allow stacking on small screens */
+  align-items: stretch;
+}
+
+/* ========================================================================== 
+   Tasks panel
+   ========================================================================== */
+.tasks-wrapper {
+  min-width: 300px;
+  max-width: 1200px;
+  height: 100vh;
+  width: 500px;          /* starting width */
+  resize: horizontal;
+  overflow: auto;         /* required for resize to work */
+  border-right: 2px solid #ccc;
+  display: flex;
+}
+
+.tasks-panel {
+  width: 100%;            /* fill wrapper */
+  display: flex;
+  flex-direction: column;
+  padding: var(--panel-padding);
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* Headline */
+.tasks-panel h2 {
+  margin: 0;
+  font-size: calc(var(--base-font-size) * var(--heading-scale));
+  font-weight: 600;
+}
+
+/* Task input section */
+.task-input {
+  display: flex;
+  gap: var(--gap-sm);
+  align-items: center;
+  width: 100%;
+}
+
+.task-input input[type="text"],
+.task-input input[type="datetime-local"] {
+  flex: 1;
+  min-width: 0;       /* allows shrinking */
+  padding: 10px 12px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  background: #fff;
+}
+
+.task-input button {
+  padding: 10px 14px;
+  border-radius: var(--border-radius);
+  border: none;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  font-weight: 600;
+  cursor: pointer;
+  min-width: 44px;
+}
+
+.task-input button:hover { filter: brightness(0.95); }
+.task-input button:active { transform: translateY(1px); }
+
+/* Task help / examples */
+.task-help {
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+
+.task-help code {
+  display: inline-block;
+  padding: 4px 6px;
+  background: #f6f8fb;
+  border-radius: 6px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, "Roboto Mono", monospace;
+  font-size: 0.95em;
+}
+
+/* Task groups & items */
+.task-group { margin-bottom: 14px; }
+
+.task-group-header {
+  background: #f7f8fa;
+  padding: 8px 10px;
+  font-weight: 600;
+  border-radius: var(--border-radius);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  border: 1px solid var(--border);
+}
+
+.tasks-panel ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.tasks-panel li {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--gap-md);
+  align-items: center;
+  background: #fbfbfb;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  font-size: 0.98rem;
+}
+
+.task-text { flex: 1; margin-right: 8px; word-break: break-word; }
+
+.task-buttons {
+  display: flex;
+  gap: var(--gap-sm);
+}
+
+.task-buttons button {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  font-size: 1rem;
+  border-radius: 6px;
+}
+.task-buttons button:hover { background: #f0f0f0; }
+
+/* ========================================================================== 
+   Chat panel
+   ========================================================================== */
+.chat-panel {
+  flex: 2 1 400px;  /* grow bigger than tasks panel */
+  display: flex;
+  flex-direction: column;
+  background: var(--panel-bg);
+  min-width: 320px;
+  height: 100%;
+}
+
+/* Chat header */
+.chat-panel h1 {
+  margin: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border);
+  background: #fafafa;
+  font-size: calc(var(--base-font-size) * 1.15);
+}
+
+/* Tabs container wrapper (keeps tabs visually grouped under the header) */
+.chat-tabs {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  padding: 5px;
+  border-bottom: 1px solid #ccc;
+  gap: 5px;
+}
+
+/* ========================================================================== 
+   Tabs: horizontal, single-row, scrollable
+   ========================================================================== */
+/* container for tabs; supports both the older .chat-tabs-container name and the new one */
+.chat-tabs-container {
+  display: flex !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;       /* keep a single row */
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 12px !important;
+  overflow-x: auto !important;        /* horizontal scroll when needed */
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch;
+  white-space: nowrap !important;
+  border-bottom: 1px solid var(--border);
+  background: #fafafa;
+}
+
+/* scrollbar styling for the horizontal tab row */
+.chat-tabs-container::-webkit-scrollbar {
+  height: 8px;
+}
+.chat-tabs-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+.chat-tabs-container::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.15);
+  border-radius: 4px;
+}
+
+/* Each tab is compact, won't stretch, and stays inline */
+.chat-tab {
+  flex: 0 0 auto !important;          /* do not grow or shrink; fit content */
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 6px 28px 6px 12px !important;
+  border-radius: 6px !important;
+  background: #fff;
+  cursor: pointer !important;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  white-space: nowrap !important;     /* keep title and close button on one line */
+  width: auto !important;
+  min-width: 0 !important;
+  border: 1px solid rgba(0,0,0,0.04);
+  font-size: 0.95rem;
+}
+
+/* active tab styling */
+.chat-tab.active {
+  background: var(--primary) !important;
+  color: var(--primary-contrast) !important;
+  box-shadow: none;
+}
+
+/* Title inside tab; ellipsize long names */
+.tab-title {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 160px;   /* clamp title width, adjust as needed */
+  pointer-events: none; /* click handled by the parent button */
+}
+
+/* Close button inside tab */
+.tab-close-btn {
+  margin-left: 8px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 4px;
+  border-radius: 4px;
+}
+.tab-close-btn:hover {
+  background: #f0f0f0;
+}
+
+/* ========================================================================== 
+   Chat output area (bubbles) — support both .chat-output and .ai-response
+   ========================================================================== */
+.chat-output,
+.ai-response {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Chat input bar */
+.chat-input-bar {
+  display: flex;
+  gap: var(--gap-md);
+  padding: 12px;
+  border-top: 1px solid var(--border);
+  align-items: center;
+}
+
+.chat-input-bar textarea {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  max-height: 240px;
+  padding: 10px;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--border);
+  font-size: 1rem;
+  resize: none;
+}
+
+.chat-input-bar button {
+  padding: 10px 16px;
+  background: var(--primary);
+  color: var(--primary-contrast);
+  border: none;
+  border-radius: var(--border-radius);
+  font-weight: 700;
+  cursor: pointer;
+  min-width: 80px;
+}
+
+.chat-input-bar button:disabled {
+  background: #c7dff8;
+  cursor: not-allowed;
+}
+
+/* ========================================================================== 
+   Chat bubbles
+   ========================================================================== */
+.user-message {
+  align-self: flex-end;
+  background: var(--bubble-user);
+  padding: 10px 12px;
+  border-radius: var(--bubble-radius);
+  max-width: var(--bubble-max-width);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.98rem;
+}
+
+.ai-message {
+  align-self: flex-start;
+  background: var(--bubble-ai);
+  padding: 10px 12px;
+  border-radius: var(--bubble-radius);
+  max-width: var(--bubble-max-width);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.98rem;
+}
+
+.ai-message.error {
+  background: #fff0f0;
+  border: 1px solid var(--danger);
+  color: #600;
+}
+
+/* ========================================================================== 
+   Utilities
+   ========================================================================== */
+.large-controls .task-input input,
+.large-controls .task-input button,
+.large-controls .chat-input-bar button {
+  padding: 14px 16px;
+  font-size: 1.1rem;
+}
+
+.compact .tasks-panel,
+.compact .task-input input,
+.compact .task-input button {
+  font-size: 0.92rem;
+  padding: 6px 8px;
+}
+
+/* ========================================================================== 
+   Responsive
+   ========================================================================== */
+@media (max-width: 900px) {
+  .app-container { flex-direction: column; height: auto; }
+  .tasks-panel, .chat-panel {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    height: auto;
+  }
+
+  /* allow tabs to wrap on very small screens */
+  .chat-tabs-container {
+    flex-wrap: wrap !important;
+  }
+}
